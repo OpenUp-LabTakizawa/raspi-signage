@@ -16,7 +16,7 @@
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@heroicons/react": "^2.1.1",
-    "@mui/icons-material": "^5.15.2",
+    "@mui/icons-material": "^5.15.3",
     "@mui/material": "^5.15.2",
     "autoprefixer": "^10.4.16",
     "firebase": "^10.7.1",
