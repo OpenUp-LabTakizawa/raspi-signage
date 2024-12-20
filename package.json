@@ -20,7 +20,7 @@
     "@mui/material": "^6.0.0",
     "autoprefixer": "^10.4.20",
     "firebase": "^11.1.0",
-    "firebase-admin": "^13.0.1",
+    "firebase-admin": "^13.0.2",
     "next": "^15.1.2",
     "postcss": "^8.4.49",
     "react": "^19.0.0",
