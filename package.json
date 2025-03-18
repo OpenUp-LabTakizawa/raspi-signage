@@ -16,12 +16,12 @@
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.14.0",
     "@heroicons/react": "^2.2.0",
-    "@mui/icons-material": "^6.4.7",
+    "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.0.0",
     "autoprefixer": "^10.4.21",
     "firebase": "^11.4.0",
     "firebase-admin": "^13.2.0",
-    "next": "^15.2.2",
+    "next": "^15.2.3",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-async-hook": "^4.0.0",
@@ -31,6 +31,6 @@
   },
   "devDependencies": {
     "eslint": "9.22.0",
-    "eslint-config-next": "15.2.2"
+    "eslint-config-next": "15.2.3"
   }
 }
