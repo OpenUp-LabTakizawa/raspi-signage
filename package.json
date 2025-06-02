@@ -16,7 +16,7 @@
     "@emotion/server": "^11.11.0",
     "@emotion/styled": "^11.14.0",
     "@heroicons/react": "^2.2.0",
-    "@mui/icons-material": "^7.1.0",
+    "@mui/icons-material": "^7.1.1",
     "@mui/material": "^7.0.0",
     "autoprefixer": "^10.4.21",
     "firebase": "^11.8.1",
@@ -30,7 +30,7 @@
     "swr": "^2.3.3"
   },
   "devDependencies": {
-    "eslint": "9.27.0",
+    "eslint": "9.28.0",
     "eslint-config-next": "15.3.3"
   }
 }
