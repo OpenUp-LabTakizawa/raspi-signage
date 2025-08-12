@@ -27,10 +27,10 @@
     "react-async-hook": "^4.0.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^19.1.1",
-    "swr": "^2.3.4"
+    "swr": "^2.3.6"
   },
   "devDependencies": {
-    "eslint": "9.32.0",
+    "eslint": "9.33.0",
     "eslint-config-next": "15.4.6"
   }
 }
