@@ -30,7 +30,7 @@
     "swr": "^2.4.1"
   },
   "devDependencies": {
-    "eslint": "10.0.2",
+    "eslint": "10.0.3",
     "eslint-config-next": "16.1.6"
   }
 }
