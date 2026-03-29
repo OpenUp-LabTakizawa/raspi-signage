@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -p $PORT",
-    "lint": "next lint"
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write ."
   },
   "engines": {
     "node": "18"
@@ -30,7 +32,6 @@
     "swr": "^2.4.1"
   },
   "devDependencies": {
-    "eslint": "10.1.0",
-    "eslint-config-next": "16.2.1"
+    "@biomejs/biome": "2.4.9"
   }
 }
