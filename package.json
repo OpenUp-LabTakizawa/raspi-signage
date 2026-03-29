@@ -1,17 +1,14 @@
 {
-  "name": "sinage-next",
+  "name": "raspi-signage",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p $PORT",
+    "start": "next start",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write ."
-  },
-  "engines": {
-    "node": "18"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
