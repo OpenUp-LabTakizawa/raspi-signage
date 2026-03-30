@@ -20,7 +20,7 @@ import ListItemText from "@mui/material/ListItemText"
 import { createTheme, styled, ThemeProvider } from "@mui/material/styles"
 import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
-import { useRouter } from "next/router"
+import { usePathname, useRouter } from "next/navigation"
 import * as React from "react"
 import { supabase } from "../../src/supabase/client"
 import { getContentList } from "../../utilities/getContentDataClient"
@@ -90,12 +90,14 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme()
 
-function DashboardContent({
-  areaDisplay,
-  isPass,
-  children,
-  _title = "defaoult title",
-}) {
+const AREA_DISPLAY_PATHS = [
+  "/dashboard",
+  "/dashboard/ManageContents",
+  "/dashboard/ViewPosition",
+]
+const PASS_PATHS = ["/dashboard/PasswordReset"]
+
+function DashboardContent({ children }) {
   const [open, setOpen] = React.useState(false)
   const {
     isAdmin,
@@ -110,11 +112,13 @@ function DashboardContent({
   const [contentsObjArr, setContentsObjArr] = React.useState([])
   const [area, setArea] = React.useState("")
   const [name, setName] = React.useState("")
-  //  const [u_id, setU_id] = React.useState();
   const toggleDrawer = () => {
     setOpen(!open)
   }
   const router = useRouter()
+  const pathname = usePathname()
+  const areaDisplay = AREA_DISPLAY_PATHS.includes(pathname)
+  const isPass = PASS_PATHS.includes(pathname)
 
   const handleOnAreaChange = (event) => {
     setArea(event.target.value)
@@ -299,21 +303,10 @@ function DashboardContent({
   )
 }
 
-export default function Dashboard({
-  areaDisplay,
-  isPass = false,
-  children,
-  _title,
-}) {
+export default function Dashboard({ children }) {
   return (
     <OrderProvider>
-      <DashboardContent
-        areaDisplay={areaDisplay}
-        isPass={isPass}
-        title="defalut title"
-      >
-        {children}
-      </DashboardContent>
+      <DashboardContent>{children}</DashboardContent>
     </OrderProvider>
   )
 }

@@ -7,8 +7,8 @@ concurrency:
 on:
   pull_request:
     paths:
+      - "app/**"
       - "components/**"
-      - "pages/**"
       - "utilities/**"
       - "src/**"
       - "public/**"
@@ -18,8 +18,8 @@ on:
       - "*config.*"
   push:
     paths:
+      - "app/**"
       - "components/**"
-      - "pages/**"
       - "utilities/**"
       - "src/**"
       - "public/**"
@@ -36,10 +36,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
-      NEXT_PUBLIC_SUPABASE_ANON_KEY: {{ secrets.SUPABASE_ANON_KEY }}
-      SUPABASE_SERVICE_ROLE_KEY: {{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
 
     steps:
       - name: 📥 Checkout
@@ -59,6 +55,9 @@ jobs:
         run: |
           bunx supabase start
           bunx supabase db reset
+          echo "NEXT_PUBLIC_SUPABASE_URL=$(bunx supabase status --output json | jq -r '.API_URL')" >> "$GITHUB_ENV"
+          echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=$(bunx supabase status --output json | jq -r '.ANON_KEY')" >> "$GITHUB_ENV"
+          echo "SUPABASE_SERVICE_ROLE_KEY=$(bunx supabase status --output json | jq -r '.SERVICE_ROLE_KEY')" >> "$GITHUB_ENV"
 
       - name: 🎭 Install Playwright Browsers
         run: bun playwright install --with-deps

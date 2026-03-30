@@ -9,7 +9,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { supabase } from "../../src/supabase/client"
 import {
@@ -84,7 +84,7 @@ function AccountSettingManagementComponent() {
       }
     }
     try {
-      setProgress(true) // スピナーを表示
+      setProgress(true) // Show spinner
       const list = coverageAreaList.reduce((acc, item, i) => {
         if (item) {
           acc.push(contentList[i].areaId)
@@ -112,14 +112,14 @@ function AccountSettingManagementComponent() {
     } catch (e) {
       console.log(e)
     } finally {
-      setProgress(false) // スピナーを表示
+      setProgress(false) // Hide spinner
     }
   }
   const handleCloseError = () => {
     setShowError(false)
   }
 
-  // エリア設定
+  // Area settings
   const onChangeCheckBox = (index) => {
     const list = coverageAreaList.map((item, i) => (index === i ? !item : item))
     setCoverageAreaList(list)
@@ -132,9 +132,16 @@ function AccountSettingManagementComponent() {
     })
     .filter((item) => item)
 
-  window?.addEventListener("beforeunload", () => {
-    supabase.auth.signOut()
-  })
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      supabase.auth.signOut()
+    }
+    window.addEventListener("beforeunload", handleBeforeUnload)
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload)
+    }
+  }, [])
+
   return (
     <Box>
       <Typography>アカウント詳細管理</Typography>

@@ -8,7 +8,7 @@ import Dialog from "@mui/material/Dialog"
 import DialogContent from "@mui/material/DialogContent"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { supabase } from "../../src/supabase/client"
 import {
@@ -58,14 +58,14 @@ function PasswordResetComponent() {
     }
   }, [router.push, uid])
 
-  // Submitボタンを押したときの処理
+  // Handle form submission
   const onSubmit = async (event) => {
     event.preventDefault()
     if (newPassword !== newRePassword) {
       return
     }
     try {
-      setProgress(true) // スピナーを表示
+      setProgress(true) // Show spinner
       console.log(user)
       const check = await checkAccountPassKey(user.email)
       console.log(check)

@@ -13,7 +13,7 @@ import Link from "@mui/material/Link"
 import Snackbar from "@mui/material/Snackbar"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 //import SnackBar from './CustomizedSnackbars';
 import { getAccountLoginData } from "../../utilities/getContentDataClient"
@@ -41,7 +41,7 @@ function LoginComponent() {
     setStatus({ ...status, open: false })
   }
 
-  // Submitボタンを押したときの処理
+  // Handle form submission
   const onSubmit = async (event) => {
     event.preventDefault()
     const regex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,}$/
@@ -52,7 +52,7 @@ function LoginComponent() {
       setShowError(true)
       return
     }
-    setProgress(true) // スピナーを表示
+    setProgress(true) // Show spinner
     try {
       const user = await getAccountLoginData(email, password)
       if (user != null) {
@@ -90,7 +90,7 @@ function LoginComponent() {
       setErrorPart("ログイン")
       setShowError(true)
     } finally {
-      setProgress(false) // スピナーを表示
+      setProgress(false) // Hide spinner
     }
   }
 

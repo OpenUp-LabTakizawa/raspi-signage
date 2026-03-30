@@ -6,17 +6,17 @@ export const setContentData = async (_content) => {
   // Kept for compatibility
 }
 
-// コンテンツ更新処理（削除含む）
+// Update content order (including delete)
 export const setContentOrder = async (docId, content) => {
   await supabase.from("orders").upsert({ id: docId, ...content })
 }
 
-// コンテンツ登録処理
+// Register content
 export const updateContentOrder = async (docId, content) => {
   await supabase.from("orders").update(content).eq("id", docId)
 }
 
-// CSSピクセルサイズの登録、またコンテンツサイズの取得
+// Register or retrieve CSS pixel size for content
 export const setContentPixelSize = async (
   orderId,
   pixelSizeId,
@@ -90,7 +90,7 @@ export const setContentPixelSize = async (
   return pixelSize
 }
 
-// 表示画面調整画面での初期設定
+// Initial setup for display adjustment screen
 export const createDisplayContent = async (orderId, pixel) => {
   const pixelSize = {
     width: 0,
@@ -124,7 +124,7 @@ export const createDisplayContent = async (orderId, pixel) => {
   }
 }
 
-// 表示画面調整の項目更新
+// Update display adjustment parameters
 export const updateDisplayContent = async (
   pixelSizeId,
   height,
@@ -143,7 +143,7 @@ export const updateDisplayContent = async (
     .eq("id", pixelSizeId)
 }
 
-// ラズパイサイネージ表示画面でCSSピクセルサイズを再取得するためにロックを解除
+// Unlock CSS pixel size for re-acquisition on Raspberry Pi signage display
 export const resetPixelSize = async (pixelSizeId) => {
   await supabase
     .from("pixel_sizes")
@@ -151,7 +151,7 @@ export const resetPixelSize = async (pixelSizeId) => {
     .eq("id", pixelSizeId)
 }
 
-// エリア管理画面でエリア追加を実行
+// Add area in area management
 export const createContentsData = async (areaName) => {
   const { data: newOrder } = await supabase
     .from("orders")
@@ -171,7 +171,7 @@ export const createContentsData = async (areaName) => {
   })
 }
 
-// エリア管理画面でエリア編集を実行
+// Edit area in area management
 export const updateContentsData = async (index, contents, areaName) => {
   const orderId = contents[index].orderId
   await supabase
@@ -180,7 +180,7 @@ export const updateContentsData = async (index, contents, areaName) => {
     .eq("order_id", orderId)
 }
 
-// エリア管理画面でエリア削除を実行
+// Delete area in area management
 export const deleteContentsData = async (index, contents) => {
   const orderId = contents[index].orderId
   await supabase
@@ -189,7 +189,7 @@ export const deleteContentsData = async (index, contents) => {
     .eq("order_id", orderId)
 }
 
-// アカウント一覧管理画面でアカウント作成を実行
+// Create account in account management
 export const createAccountData = async (email, password, user) => {
   const { data: authData, error } = await supabaseAdmin.auth.admin.createUser({
     email,
@@ -212,7 +212,7 @@ export const createAccountData = async (email, password, user) => {
   })
 }
 
-// アカウント一覧管理画面でアカウント編集を実行
+// Edit account in account management
 export const updateAccountData = async (
   uid,
   user,
@@ -249,12 +249,12 @@ export const updateAccountData = async (
     .eq("id", uid)
 }
 
-// アカウント一覧管理画面でアカウント削除を実行
+// Delete account in account management
 export const deleteAccountData = async (uid) => {
   await supabase.from("users").update({ deleted: true }).eq("id", uid)
 }
 
-// アカウント一覧管理画面でアカウント編集を実行
+// Reset account password in account management
 export const resetAccountPassword = async (uid, newPassword) => {
   const { error } = await supabaseAdmin.auth.admin.updateUserById(uid, {
     password: newPassword,
