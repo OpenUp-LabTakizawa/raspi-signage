@@ -3,7 +3,7 @@ import { updateContentOrder } from "./setContentData"
 
 const BUCKET = "signage-contents"
 
-// コンテンツ登録時のsupabase接続等処理
+// Upload content to Supabase storage
 export const postContent = async (
   docId,
   content,

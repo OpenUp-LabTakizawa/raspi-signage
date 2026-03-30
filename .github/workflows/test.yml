@@ -7,8 +7,8 @@ concurrency:
 on:
   pull_request:
     paths:
+      - "app/**"
       - "components/**"
-      - "pages/**"
       - "utilities/**"
       - "src/**"
       - "public/**"
@@ -18,8 +18,8 @@ on:
       - "*config.*"
   push:
     paths:
+      - "app/**"
       - "components/**"
-      - "pages/**"
       - "utilities/**"
       - "src/**"
       - "public/**"

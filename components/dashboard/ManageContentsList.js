@@ -13,7 +13,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd"
 import { getContentDataClient } from "../../utilities/getContentDataClient"
@@ -21,7 +21,7 @@ import { setContentOrder } from "../../utilities/setContentData"
 import { useOrderContext } from "./OrderContext"
 
 function ManageContentsView() {
-  // display / hidden : 表示/非表示コンテンツのArray
+  // display / hidden: arrays for visible/hidden contents
   const [display, setDisplay] = useState([])
   const [hidden, setHidden] = useState([])
   const [contents_list, _setContentsList] = useState({})
@@ -29,7 +29,7 @@ function ManageContentsView() {
   const [errorPart, _setErrorPart] = useState("")
   const [showError, setShowError] = useState(false)
 
-  // tempDisplay / tempHidden : display / hiddenに対しての一時的な変更を保持するMap
+  // tempDisplay / tempHidden: temporary maps holding changes to display/hidden
   //  const [tempDisplay, setTempDisplay] = useState(new Map());
   //  const [tempHidden, setTempHidden] = useState(new Map());
   const { uid, orderId, setProgress } = useOrderContext()
@@ -61,7 +61,7 @@ function ManageContentsView() {
   }, [orderId])
   //  useEffect(() => {
   //    const displayMap = new Map();
-  //    // displayのディープコピーを作成しないとdisplayMapの変更と連動してしまう
+  //    // Deep copy display to avoid mutation side effects
   //    const tmpDisplay = display.map(obj => ({ ...obj }));
   //    tmpDisplay.forEach((elem, i) => {
   //      displayMap.set("d" + i, elem);
@@ -81,7 +81,7 @@ function ManageContentsView() {
     if (!e.target.value) {
       return
     }
-    //tmpDisplayのディープコピーを作成して変更を加える
+    //Deep copy tempDisplay and apply changes
     //    const tmp = new Map();
     //    [...tempDisplay.keys()].forEach(elem => {
     //      tmp.set(elem, tempDisplay.get(elem));
@@ -122,7 +122,7 @@ function ManageContentsView() {
     //        setStatus({
     //          open: true,
     //          type: "error",
-    //          message: `動画（MP4,MOV,WMV）以外が選択されています`
+    //          message: `Only video files (MP4, MOV, WMV) are allowed`
     //        });
     //        validationFlg = true;
     //      }
@@ -133,7 +133,7 @@ function ManageContentsView() {
     //        setStatus({
     //          open: true,
     //          type: "error",
-    //          message: `動画（MP4,MOV,WMV）以外が選択されています`
+    //          message: `Only video files (MP4, MOV, WMV) are allowed`
     //        });
     //        validationFlg = true;
     //      }

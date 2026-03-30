@@ -11,7 +11,7 @@ import {
   Paper,
   Typography,
 } from "@mui/material"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import {
   getContentsDataClient,
@@ -130,7 +130,7 @@ function UserAccountManagementComponent() {
     try {
       setProgress(true)
       //      if (userList.some(user => user.userId === userId)) {
-      //        setError("ユーザーIDが重複しています");
+      //        setError("User ID is duplicated");
       //        setShowError(true);
       //        return;
       //      }
@@ -214,7 +214,7 @@ function UserAccountManagementComponent() {
     //    router.reload();
   }
 
-  // 管理者・利用者入れかえ
+  // Toggle admin/user role
   const handleOptionChange = (event) => {
     setManagement(event.target.value)
   }
@@ -230,13 +230,13 @@ function UserAccountManagementComponent() {
     )
   }
 
-  // エリア設定
+  // Area settings (create)
   const onChangeCheckBox = (index) => {
     const list = area.map((item, i) => (index === i ? !item : item))
     setArea(list)
   }
 
-  // エリア設定
+  // Area settings (edit)
   const onSettingChangeCheckBox = (index, i) => {
     setUsers(
       users.map((item, j) => {

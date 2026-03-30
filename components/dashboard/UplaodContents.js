@@ -9,7 +9,7 @@ import {
   ToggleButtonGroup,
   Typography,
 } from "@mui/material"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
 import { postContent } from "../../utilities/upload"
@@ -59,9 +59,9 @@ function UploadContents() {
     }
     let validationFlg = false
     if (type === "image") {
-      // 画像の場合
+      // Image files
       for (let i = 0; i < e.target.files.length; i++) {
-        // 拡張子チェック
+        // Validate file extension
         if (
           e.target.files[i].type !== "image/png" &&
           e.target.files[i].type !== "image/jpeg"
@@ -74,9 +74,9 @@ function UploadContents() {
         }
       }
     } else if (type === "video") {
-      // 動画の場合
+      // Video files
       for (let i = 0; i < e.target.files.length; i++) {
-        // 拡張子チェック
+        // Validate file extension
         if (
           e.target.files[i].type !== "video/mp4" &&
           e.target.files[i].type !== "video/quicktime" &&

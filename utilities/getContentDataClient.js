@@ -5,7 +5,7 @@ export const getContentsDataClient = async (_target) => {
   return data
 }
 
-// コンテンツのリスト取得
+// Get content list
 export const getContentDataClient = async (target) => {
   // target is like "/order/{orderId}" or "order/{orderId}"
   const parts = target.split("/").filter(Boolean)
@@ -32,7 +32,7 @@ export const getOrderIdClient = async (areaId) => {
   return data?.order_id ?? ""
 }
 
-// 表示画面調整コンテンツの取得
+// Get pixel size ID for display adjustment
 export const getContentPixelSizeId = async (orderId) => {
   const { data } = await supabase
     .from("contents")
@@ -43,7 +43,7 @@ export const getContentPixelSizeId = async (orderId) => {
   return data?.pixel_size_id ?? ""
 }
 
-// ピクセルサイズ情報の取得
+// Get pixel size info
 export const getContentPixelSize = async (pixelSizeId) => {
   const { data } = await supabase
     .from("pixel_sizes")
@@ -81,7 +81,7 @@ export const getUserAccountList = async (_target) => {
   }))
 }
 
-// アカウント管理画面でアカウントを1件取得する方法
+// Get a single account for account settings
 export const getAccountDataClient = async (uid) => {
   const { data } = await supabase.from("users").select().eq("id", uid).single()
   if (!data) {
@@ -97,7 +97,7 @@ export const getAccountDataClient = async (uid) => {
   }
 }
 
-// ログイン(auth⇒UIDをドキュメントのキーに)
+// Login (auth -> use UID as document key)
 export const getAccountLoginData = async (email, password) => {
   const { data: authData, error } = await supabase.auth.signInWithPassword({
     email,
@@ -122,7 +122,7 @@ export const getAccountLoginData = async (email, password) => {
   }
 }
 
-// パスワード初期化チェック
+// Check password reset flag
 export const checkAccountPassKey = async (email) => {
   const { data } = await supabase
     .from("users")

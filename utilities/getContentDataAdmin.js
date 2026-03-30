@@ -1,6 +1,6 @@
 import { supabaseAdmin } from "../src/supabase/server"
 
-// オーダーに紐づくリスト一覧
+// Get list of orders by orderId
 export const getContentDataAdmin = async (orderId) => {
   const { data } = await supabaseAdmin
     .from("orders")
@@ -13,7 +13,7 @@ export const getContentDataAdmin = async (orderId) => {
   return data
 }
 
-// オーダーID取得
+// Get orderId by areaId
 export const getOrderIdAdmin = async (areaId) => {
   const { data } = await supabaseAdmin
     .from("contents")
