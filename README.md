@@ -26,8 +26,8 @@ supabase start
 
 This starts all Supabase services via Docker. After startup, the CLI outputs the local API URL and keys.
 
-- Studio: http://localhost:54323
-- API URL: http://127.0.0.1:54321
+- Studio: <http://localhost:54323>
+- API URL: <http://127.0.0.1:54321>
 
 ### 2. Configure environment variables
 
@@ -46,9 +46,9 @@ supabase db reset
 This runs migrations and seeds the database with initial data:
 
 | Account | Email | Password | Role |
-|---|---|---|---|
-| Admin | admin@example.com | password123 | 管理者 |
-| User | user@example.com | password123 | 一般ユーザー |
+| --- | --- | --- | --- |
+| Admin | <admin@example.com> | password123 | 管理者 |
+| User | <user@example.com> | password123 | 一般ユーザー |
 
 Seed data includes 2 areas (関東, 関西) with corresponding orders and pixel size settings.
 
@@ -59,7 +59,7 @@ bun install
 bun dev
 ```
 
-Open http://localhost:3000/dashboard/Login to access the dashboard.
+Open <http://localhost:3000/dashboard/Login> to access the dashboard.
 
 ## Stopping Supabase
 
