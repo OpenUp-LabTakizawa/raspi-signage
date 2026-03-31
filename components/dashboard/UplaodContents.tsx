@@ -68,7 +68,9 @@ function UploadContents(): React.JSX.Element {
     }
   }
 
-  const handleOnAddImage = async (e: React.ChangeEvent<HTMLInputElement>): Promise<void> => {
+  const handleOnAddImage = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ): Promise<void> => {
     if (!e.target.files) {
       return
     }
@@ -224,11 +226,7 @@ function UploadContents(): React.JSX.Element {
                   />
                 ) : (
                   // biome-ignore lint/a11y/useMediaCaption: preview video
-                  <video
-                    id={id}
-                    src={previews[i]}
-                    style={{ width: "100%" }}
-                  />
+                  <video id={id} src={previews[i]} style={{ width: "100%" }} />
                 )}
               </div>
             )
