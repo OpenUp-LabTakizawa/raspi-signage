@@ -43,7 +43,7 @@ export type User = {
   deleted: boolean
 }
 
-// Supabase Database型（ジェネリクス用）
+// Supabase Database型（for generics）
 export interface Database {
   public: {
     Tables: {
@@ -78,7 +78,7 @@ export interface Database {
   }
 }
 
-// ユーティリティ関数の戻り値型
+// Utility function return types
 
 export interface PixelSizeInfo {
   width: number
@@ -91,32 +91,25 @@ export interface PixelSizeInfo {
   getPixelFlg: boolean
 }
 
-export interface UserAccount {
-  uid: string
+interface BaseUserFields {
   email: string
   userName: string
   management: boolean
   coverageArea: string[]
   passFlg: boolean
+}
+
+export interface UserAccount extends BaseUserFields {
+  uid: string
   delete: boolean
 }
 
-export interface AccountData {
-  email: string
-  userName: string
-  management: boolean
-  coverageArea: string[]
-  passFlg: boolean
+export interface AccountData extends BaseUserFields {
   delete: boolean
 }
 
-export interface LoginData {
+export interface LoginData extends BaseUserFields {
   uid: string
-  email: string
-  userName: string
-  management: boolean
-  coverageArea: string[]
-  passFlg: boolean
 }
 
 export interface ContentListItem {
@@ -127,7 +120,7 @@ export interface ContentListItem {
   delete: boolean
 }
 
-// OrderContextの型定義
+// OrderContext type definitions
 export interface OrderContextValue {
   orderId: string | null
   setOrderId: (id: string | null) => void
