@@ -1,3 +1,5 @@
+"use client"
+
 import type { User } from "@supabase/supabase-js"
 import { usePathname, useRouter } from "next/navigation"
 import type React from "react"
