@@ -7,7 +7,6 @@ const root = resolve(import.meta.dir, "../../..")
 describe("App Router migration: 'use client' directives", () => {
   // Pages that need "use client" (contain hooks or browser APIs directly)
   const clientPages: string[] = [
-    "app/page.tsx",
     "app/dashboard/layout.tsx",
     "app/dashboard/page.tsx",
   ]
@@ -22,6 +21,7 @@ describe("App Router migration: 'use client' directives", () => {
   // Server component pages (no "use client" needed)
   const serverPages: string[] = [
     "app/layout.tsx",
+    "app/page.tsx",
     "app/dashboard/login/page.tsx",
     "app/dashboard/password-reset/page.tsx",
     "app/dashboard/manage-contents/page.tsx",

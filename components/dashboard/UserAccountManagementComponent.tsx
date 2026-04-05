@@ -53,7 +53,7 @@ function UserAccountManagementComponent(): React.JSX.Element {
   const [users, setUsers] = useState<UserEditState[]>([])
 
   const [error, setError] = useState<string>("")
-  const [errorPart, setErrorPart] = useState<string>("")
+  const [_errorPart, setErrorPart] = useState<string>("")
   const [showError, setShowError] = useState<boolean>(false)
 
   const [detailDisplay, setDetailDisplay] = useState<boolean[]>([])
