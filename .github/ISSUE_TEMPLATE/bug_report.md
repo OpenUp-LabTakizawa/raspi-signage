@@ -38,5 +38,4 @@ Link to code example:
 
 ## The current behavior
 
-
 ## The expected behavior
