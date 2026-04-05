@@ -10,7 +10,6 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "サイネージダッシュボード",
-  icons: { icon: "/favicon.ico" },
 }
 
 export default function RootLayout({
