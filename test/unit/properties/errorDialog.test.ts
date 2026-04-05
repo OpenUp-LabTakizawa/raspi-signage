@@ -1,11 +1,6 @@
 import { describe, expect, test } from "bun:test"
 import * as fc from "fast-check"
 
-// Verify the ErrorDialog component interface contract:
-// Given error and errorPart strings, the component renders them in its output.
-// Since MUI Dialog uses portals (not SSR-friendly), we test the component's
-// internal structure by verifying the JSX output directly.
-
 describe("Property 2: ErrorDialog rendering accuracy", () => {
   test("ErrorDialog component accepts error and errorPart props", () => {
     // Dynamically import to verify the module exports correctly
