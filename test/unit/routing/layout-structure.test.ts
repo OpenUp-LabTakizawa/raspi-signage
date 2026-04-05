@@ -56,9 +56,9 @@ describe("App Router migration: layout structure", () => {
 })
 
 describe("App Router migration: Suspense boundaries", () => {
-  test("root page wraps useSearchParams in Suspense", () => {
+  test("root page is a server component that delegates to SignageClient", () => {
     const content = readFileSync(resolve(root, "app/page.tsx"), "utf-8")
-    expect(content).toContain("Suspense")
-    expect(content).toContain("useSearchParams")
+    expect(content).toContain("SignageClient")
+    expect(content).toContain("searchParams")
   })
 })

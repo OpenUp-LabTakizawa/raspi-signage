@@ -15,12 +15,6 @@ import ErrorDialog from "./ErrorDialog"
 import { useOrderContext } from "./OrderContext"
 
 type UploadType = "image" | "video"
-type ErrorMessage =
-  | ""
-  | "画像（PNG,JPEG）以外が選択されています"
-  | "動画（MP4,MOV,WMV）以外が選択されています"
-type ErrorPart = "" | "画像" | "動画"
-
 function UploadContents(): React.JSX.Element {
   const [images, setImages] = useState<File[]>([])
   const [previews, setPreviews] = useState<string[]>([])
