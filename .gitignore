@@ -49,7 +49,7 @@ supabase/.temp
 *.tsbuildinfo
 next-env.d.ts
 
-# Kiro settings
+# AI settings
 .claude
 
 # Docs
