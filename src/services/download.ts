@@ -1,24 +1,20 @@
-import { createClient } from "@/src/supabase/client"
+"use server"
 
-const BUCKET = "signage-contents"
+import { requireSession } from "@/src/auth/guard"
+import { getStorage } from "@/src/storage"
 
-export const downLoadURLList = async ({
+// Authenticated.
+export async function downLoadURLList({
   areaId,
 }: {
   areaId: string
-}): Promise<string[]> => {
-  const supabase = createClient()
-  const { data: files, error } = await supabase.storage
-    .from(BUCKET)
-    .list(areaId)
-  if (error || !files) {
+}): Promise<string[]> {
+  await requireSession()
+  try {
+    const storage = getStorage()
+    const objects = await storage.list(areaId)
+    return objects.map((obj) => obj.url)
+  } catch {
     return []
   }
-
-  return files.map((file) => {
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from(BUCKET).getPublicUrl(`${areaId}/${file.name}`)
-    return publicUrl
-  })
 }

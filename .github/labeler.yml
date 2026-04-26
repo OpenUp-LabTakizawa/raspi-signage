@@ -11,13 +11,13 @@
     - any-glob-to-any-file: "*config.*"
 dependencies:
   - changed-files:
-    - any-glob-to-any-file: ["package-lock.json", "package.json"]
+    - any-glob-to-any-file: ["bun.lock", "package.json"]
 📝documentation:
   - changed-files:
     - any-glob-to-any-file: ["**/*.md"]
 🚀enhancement:
   - changed-files:
-    - any-glob-to-any-file: ["components/**", "pages/**", "src/**", "utilities/**"]
+    - any-glob-to-any-file: ["app/**", "components/**", "src/**", "scripts/**"]
 🪸git:
   - changed-files:
     - any-glob-to-any-file: [".gitattributes", ".gitignore"]

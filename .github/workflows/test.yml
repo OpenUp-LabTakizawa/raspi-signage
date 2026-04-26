@@ -9,8 +9,8 @@ on:
     paths:
       - "app/**"
       - "components/**"
-      - "utilities/**"
       - "src/**"
+      - "scripts/**"
       - "public/**"
       - "test/**"
       - "bun.lock"
@@ -20,8 +20,8 @@ on:
     paths:
       - "app/**"
       - "components/**"
-      - "utilities/**"
       - "src/**"
+      - "scripts/**"
       - "public/**"
       - "test/**"
       - "bun.lock"
@@ -38,18 +38,6 @@ jobs:
     outputs:
       is_success: ${{ steps.test.outputs.is_success }}
       test_log: ${{ steps.test.outputs.test_log }}
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
 
     steps:
       - name: 📥 Checkout
@@ -67,8 +55,14 @@ jobs:
 
       - name: 🧪 Test app
         id: test
+        # Unit tests fully mock the database, storage, and auth layers, so no
+        # external services are needed. DATABASE_URL is set only so module
+        # initialization in `src/auth/server.ts` does not throw at import time
+        # (the actual auth instance is mocked in tests).
         env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+          DATABASE_URL: postgres://placeholder:placeholder@localhost:5432/placeholder
+          BETTER_AUTH_SECRET: ci-better-auth-secret-not-for-production
+          BETTER_AUTH_URL: http://localhost:3000
         run: |
           bun test:unit &> >(tee -p test.log) || STATUS=$?
           if [ $STATUS -ne 0 ]; then

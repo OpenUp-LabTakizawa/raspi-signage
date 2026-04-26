@@ -7,11 +7,12 @@ on:
       - "components/**"
       - "public/**"
       - "src/**"
-      - "styles/**"
-      - "utilities/**"
+      - "scripts/**"
+      - "test/**"
+      - "docker-compose.yml"
       - "package.json"
-      - "package-lock.json"
-      - "next.config.js"
+      - "bun.lock"
+      - "next.config.ts"
       - "biome.json"
     types:
       - closed
