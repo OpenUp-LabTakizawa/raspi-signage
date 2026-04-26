@@ -18,20 +18,15 @@ import {
 import { useEffect, useState } from "react"
 import ErrorDialog from "@/components/dashboard/ErrorDialog"
 import { useOrderContext } from "@/components/dashboard/OrderContext"
+import type { ContentListItem, UserAccount } from "@/src/db/types"
 import {
   createAccountData,
   deleteAccountData,
   updateAccountData,
 } from "@/src/services/accounts"
-import {
-  getContentsDataClient,
-  mapContentToListItem,
-} from "@/src/services/contents"
+import { mapContentToListItem } from "@/src/services/content-helpers"
+import { getContentsDataClient } from "@/src/services/contents"
 import { getUserAccountList } from "@/src/services/users"
-import type {
-  ContentListItem,
-  UserAccount,
-} from "@/src/supabase/database.types"
 
 interface UserEditState {
   userName: string
@@ -87,7 +82,6 @@ export default function UserAccountManagementClient({
   })
 
   const [error, setError] = useState<string>(serverError ?? "")
-  const [_errorPart, setErrorPart] = useState<string>("")
   const [showError, setShowError] = useState<boolean>(!!serverError)
 
   const [detailDisplay, setDetailDisplay] = useState<boolean[]>(() =>
@@ -196,7 +190,6 @@ export default function UserAccountManagementClient({
       setCreateDisplay(false)
     } catch (e) {
       setError(e instanceof Error ? e.message : "エラーが発生しました")
-      setErrorPart("")
       setShowError(true)
     } finally {
       setProgress(false)
@@ -223,10 +216,9 @@ export default function UserAccountManagementClient({
         coverageArea: list,
       }
 
-      await updateAccountData(users[index].uid ?? "", user, "", "", "")
+      await updateAccountData(users[index].uid ?? "", user)
     } catch (e) {
       setError(e instanceof Error ? e.message : "エラーが発生しました")
-      setErrorPart("")
       setShowError(true)
     } finally {
       setProgress(false)
@@ -243,7 +235,6 @@ export default function UserAccountManagementClient({
       await deleteAccountData(userList[index].uid)
     } catch (e) {
       setError(e instanceof Error ? e.message : "エラーが発生しました")
-      setErrorPart("")
       setShowError(true)
     } finally {
       setProgress(false)
@@ -699,7 +690,7 @@ export default function UserAccountManagementClient({
       )}
       <ErrorDialog
         error={error}
-        errorPart="エリア追加時のエリア名"
+        errorPart=""
         open={showError}
         onClose={handleCloseError}
       />

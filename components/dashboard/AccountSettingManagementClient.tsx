@@ -16,11 +16,11 @@ import {
 import { useEffect, useState } from "react"
 import ErrorDialog from "@/components/dashboard/ErrorDialog"
 import { useOrderContext } from "@/components/dashboard/OrderContext"
+import { changePassword, signOut } from "@/src/auth/client"
+import type { AccountData, Content } from "@/src/db/types"
 import { updateAccountData } from "@/src/services/accounts"
 import { getAccountDataClient } from "@/src/services/auth"
 import { getContentsDataClient } from "@/src/services/contents"
-import { createClient } from "@/src/supabase/client"
-import type { AccountData, Content } from "@/src/supabase/database.types"
 
 interface AccountSettingManagementClientProps {
   uid: string | null
@@ -61,9 +61,7 @@ export default function AccountSettingManagementClient({
       }
       const userData = await getAccountDataClient(u_id)
       const contents = await getContentsDataClient()
-      console.log(userData)
       setUser(userData)
-      console.log(contents)
       setContentList(contents ?? [])
       setDisplayFlg(true)
       setManagement(userData?.management ? "management" : "user")
@@ -104,16 +102,17 @@ export default function AccountSettingManagementClient({
         coverageArea: list,
       }
       if (!passwordFlg) {
-        await updateAccountData(
-          uid ?? "",
-          content,
-          user?.email ?? "",
-          nowPassword,
+        const change = await changePassword({
+          currentPassword: nowPassword,
           newPassword,
-        )
-      } else {
-        await updateAccountData(uid ?? "", content, "", "", "")
+        })
+        if (change.error) {
+          throw new Error(
+            change.error.message ?? "パスワード変更に失敗しました",
+          )
+        }
       }
+      await updateAccountData(uid ?? "", content)
       setUpdateDisplay(false)
     } catch (e) {
       setError(e instanceof Error ? e.message : "エラーが発生しました")
@@ -142,8 +141,7 @@ export default function AccountSettingManagementClient({
 
   useEffect(() => {
     const handleBeforeUnload = (): void => {
-      const supabase = createClient()
-      supabase.auth.signOut()
+      void signOut()
     }
     window.addEventListener("beforeunload", handleBeforeUnload)
     return () => {
