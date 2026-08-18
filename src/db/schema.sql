@@ -37,6 +37,9 @@ CREATE TABLE IF NOT EXISTS "session" (
 CREATE TABLE IF NOT EXISTS "account" (
   id TEXT PRIMARY KEY,
   "userId" TEXT NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
+  -- Better Auth 1.7.0+ namespaces every identity by issuer
+  -- ("local:credential" for email/password, "local:oauth:<provider>" for OAuth).
+  issuer TEXT NOT NULL,
   "accountId" TEXT NOT NULL,
   "providerId" TEXT NOT NULL,
   "accessToken" TEXT,
@@ -49,6 +52,13 @@ CREATE TABLE IF NOT EXISTS "account" (
   "createdAt" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   "updatedAt" TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- The CREATE TABLE above is a no-op on databases provisioned before Better Auth
+-- 1.7.0, so add "issuer" explicitly and backfill it for the identities that
+-- already exist. Both steps are idempotent and safe to re-run.
+ALTER TABLE "account" ADD COLUMN IF NOT EXISTS issuer TEXT;
+UPDATE "account" SET issuer = 'local:' || "providerId" WHERE issuer IS NULL;
+ALTER TABLE "account" ALTER COLUMN issuer SET NOT NULL;
 
 CREATE TABLE IF NOT EXISTS "verification" (
   id TEXT PRIMARY KEY,
