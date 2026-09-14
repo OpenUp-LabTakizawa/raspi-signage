@@ -52,7 +52,17 @@ mise run local:up
 ```
 
 `local:up` starts a Postgres container on `localhost:54322` and a RustFS
-(S3-compatible) container on `localhost:9000` (console: `localhost:9001`).
+(S3-compatible) container on `localhost:9000` (console: `localhost:9001`), then
+applies the schema and creates the bucket.
+
+The containers run under pitchfork as the `db` daemon rather than detached, so
+`mise daemons logs db` tails them and `mise run local:down` stops them. To bring
+the dev server up with them, start the `web` daemon instead -- it depends on
+`db`, so this does everything `local:up` does and then runs `bun dev`:
+
+```bash
+mise daemons start web
+```
 
 ### 2. Environment variables
 
@@ -148,8 +158,10 @@ Open <http://localhost:3000/dashboard/login> to access the dashboard.
 ## Common tasks
 
 ```bash
-mise run local:up      # start Postgres + RustFS containers
-mise run local:down    # stop containers (data persists in volumes)
+mise run local:up      # start Postgres + RustFS containers, apply schema, ensure bucket
+mise run local:down    # stop the containers and the dev server (data persists in volumes)
+mise daemons start web # the above plus `bun dev`
+mise daemons logs db   # tail the container logs
 mise run db:migrate    # apply src/db/schema.sql
 mise run db:seed       # truncate + reseed via Better Auth
 mise run db:reset      # migrate + ensure bucket + seed

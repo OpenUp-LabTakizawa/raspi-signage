@@ -22,10 +22,10 @@ Digital signage system for Raspberry Pi. Built with Next.js 16 (App Router) + Ty
 
 ```bash
 mise install              # Install tools (bun etc.)
-mise run local:up         # Start local Postgres + RustFS via docker compose
+mise run local:up         # Start local Postgres + RustFS as the `db` daemon
 mise run db:reset         # Apply schema + ensure bucket + seed via Better Auth
 bun install
-bun dev                   # http://localhost:3000
+mise daemons start web    # Start the containers and `bun dev` (http://localhost:3000)
 ```
 
 ## Testing
