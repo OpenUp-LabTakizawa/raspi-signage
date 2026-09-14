@@ -40,11 +40,23 @@ run = "rumdl fmt ."
 
 [tasks."local:up"]
 description = "Start local Postgres + RustFS via docker compose"
-run = "docker compose up -d"
+# The `db` daemon below owns the containers and runs `local:provision` as its
+# readiness check, so this stays the one command that brings the stack up.
+run = "mise daemons start db"
 
 [tasks."local:down"]
 description = "Stop local Postgres + RustFS containers"
-run = "docker compose down"
+run = "mise daemons stop"
+
+[tasks."local:provision"]
+description = "Apply the schema and create the bucket"
+# Each step runs with the [env] table above applied, so the scripts read
+# DATABASE_URL and the S3 settings straight from it.
+#
+# This is the `db` daemon's ready_cmd, which means it is polled until it
+# succeeds rather than run once: both steps are idempotent, so an attempt made
+# before Postgres accepts connections costs nothing but the retry.
+run = ["bun scripts/db-migrate.ts", "bun scripts/ensure-bucket.ts"]
 
 [tasks."db:migrate"]
 description = "Apply src/db/schema.sql to the configured database"
@@ -68,13 +80,27 @@ run = [
 description = "Update bun dependencies and reinstall"
 run = ["bun update", "mise deps"]
 
-# Replaces the former `pitchfork.toml`. mise writes the pitchfork config under
-# $MISE_STATE_DIR and registers it, so the daemon inherits the [env] table
-# above and `bun dev` sees DATABASE_URL and friends. `mise daemons` drives
-# pitchfork rather than replacing it, which is why it stays in [tools].
+# mise writes the pitchfork config under $MISE_STATE_DIR and registers it, so
+# these daemons inherit the [env] table above and see DATABASE_URL and friends.
+# `mise daemons` drives pitchfork rather than replacing it, which is why
+# pitchfork stays in [tools].
+
+# `docker compose up` stays in the foreground. Backgrounding is the
+# supervisor's job, and `-d` would put the containers outside it: stopping the
+# daemon would leave them running. Attached, compose handles the SIGTERM
+# pitchfork sends and both containers exit 0.
+[daemons.db]
+run = "docker compose up"
+ready_cmd = { run = "mise run local:provision", timeout = "300s" }
+stop_signal = { signal = "SIGTERM", timeout = "30s" }
+
+# `depends` makes `mise daemons start web` bring the containers up first and
+# wait for the schema, so there is no separate "start the stack, then the
+# server" step to remember.
 [daemons.web]
 run = "bun dev"
-ready_port = 3000
+depends = ["db"]
+ready_port = { port = 3000, timeout = "60s" }
 
 [deps.bun]
 auto = true
