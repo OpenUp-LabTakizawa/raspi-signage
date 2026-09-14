@@ -1,5 +1,7 @@
+#!/usr/bin/env bun
+//MISE description="Truncate the app tables and reseed via Better Auth"
 import { Pool } from "pg"
-import { getAuth } from "../src/auth/server"
+import { getAuth } from "@/src/auth/server"
 
 const connectionString = process.env.DATABASE_URL
 if (!connectionString) {

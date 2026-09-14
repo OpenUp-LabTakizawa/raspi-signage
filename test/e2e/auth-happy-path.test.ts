@@ -1,7 +1,7 @@
 import { expect, type Page, test } from "@playwright/test"
 
 // Happy-path login and logout against the locally-seeded admin account
-// (see scripts/db-seed.ts). Requires `mise run db:reset` to have run.
+// (see mise-tasks/db/seed.ts). Requires `mise run db:reset` to have run.
 
 const ADMIN_EMAIL = "admin@example.com"
 const ADMIN_PASSWORD = "password123"

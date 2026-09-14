@@ -17,7 +17,7 @@ dependencies:
     - any-glob-to-any-file: ["**/*.md"]
 🚀enhancement:
   - changed-files:
-    - any-glob-to-any-file: ["app/**", "components/**", "src/**", "scripts/**"]
+    - any-glob-to-any-file: ["app/**", "components/**", "src/**", "mise-tasks/**"]
 🪸git:
   - changed-files:
     - any-glob-to-any-file: [".gitattributes", ".gitignore"]
