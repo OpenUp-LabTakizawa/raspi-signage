@@ -10,7 +10,7 @@ on:
       - "app/**"
       - "components/**"
       - "src/**"
-      - "scripts/**"
+      - "mise-tasks/**"
       - "public/**"
       - "test/**"
       - "docker-compose.yml"
@@ -22,7 +22,7 @@ on:
       - "app/**"
       - "components/**"
       - "src/**"
-      - "scripts/**"
+      - "mise-tasks/**"
       - "public/**"
       - "test/**"
       - "docker-compose.yml"
@@ -80,9 +80,9 @@ jobs:
 
       - name: 🪣 Apply schema, ensure bucket, and seed
         run: |
-          bun scripts/db-migrate.ts
-          bun scripts/ensure-bucket.ts
-          bun scripts/db-seed.ts
+          bun mise-tasks/db/migrate.ts
+          bun mise-tasks/db/ensure-bucket.ts
+          bun mise-tasks/db/seed.ts
 
       - name: 🎭 Install Playwright Browsers
         run: bun playwright install --with-deps ${{ matrix.browser }}

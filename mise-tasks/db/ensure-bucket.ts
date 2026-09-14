@@ -1,8 +1,10 @@
+#!/usr/bin/env bun
+//MISE description="Create the local RustFS bucket with a public-read policy"
 // Ensures the local RustFS bucket exists with a public-read policy. This is the
 // one step of `mise run db:reset` that needs an S3 API call rather than a shell
 // command; the schema and the seed are plain scripts the task runs directly.
 
-import { S3Storage } from "../src/storage/s3"
+import { S3Storage } from "@/src/storage/s3"
 
 const provider = process.env.STORAGE_PROVIDER ?? "s3"
 if (provider !== "s3") {

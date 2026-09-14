@@ -1,3 +1,5 @@
+#!/usr/bin/env bun
+//MISE description="Seed the production database and Vercel Blob"
 // Production seed: admin user via Better Auth, downloads source images and
 // re-uploads them to Vercel Blob, then inserts orders / pixel_sizes / contents.
 //
@@ -19,8 +21,8 @@
 // instead of replacing it. The guard below refuses to run against them.
 
 import { Pool } from "pg"
-import { getAuth } from "../src/auth/server"
-import { getStorage } from "../src/storage"
+import { getAuth } from "@/src/auth/server"
+import { getStorage } from "@/src/storage"
 
 const REQUIRED = [
   "DATABASE_URL",

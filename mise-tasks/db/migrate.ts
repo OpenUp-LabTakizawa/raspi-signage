@@ -1,3 +1,5 @@
+#!/usr/bin/env bun
+//MISE description="Apply src/db/schema.sql to the configured database"
 import { file } from "bun"
 import { Pool } from "pg"
 
@@ -8,7 +10,7 @@ if (!connectionString) {
 }
 
 const sql = await file(
-  new URL("../src/db/schema.sql", import.meta.url).pathname,
+  new URL("../../src/db/schema.sql", import.meta.url).pathname,
 ).text()
 
 const pool = new Pool({ connectionString })

@@ -56,25 +56,15 @@ description = "Apply the schema and create the bucket"
 # This is the `db` daemon's ready_cmd, which means it is polled until it
 # succeeds rather than run once: both steps are idempotent, so an attempt made
 # before Postgres accepts connections costs nothing but the retry.
-run = ["bun scripts/db-migrate.ts", "bun scripts/ensure-bucket.ts"]
+run = ["mise db:migrate", "mise db:ensure-bucket"]
 
-[tasks."db:migrate"]
-description = "Apply src/db/schema.sql to the configured database"
-run = "bun scripts/db-migrate.ts"
-
-[tasks."db:seed"]
-description = "Seed accounts (via Better Auth) and signage data"
-run = "bun scripts/db-seed.ts"
+# `db:migrate`, `db:seed`, `db:seed-prod` and `db:ensure-bucket` are the files
+# under mise-tasks/db/. Being there is what makes them tasks, so they need no
+# entry here; `mise tasks` lists them with the description in each file.
 
 [tasks."db:reset"]
 description = "Re-apply schema, ensure bucket, and re-seed (truncates app tables)"
-# Each step runs with the [env] table above applied, so the scripts read
-# DATABASE_URL and the S3 settings straight from it.
-run = [
-  "bun scripts/db-migrate.ts",
-  "bun scripts/ensure-bucket.ts",
-  "bun scripts/db-seed.ts",
-]
+run = ["mise db:migrate", "mise db:ensure-bucket", "mise db:seed"]
 
 [tasks.update]
 description = "Update bun dependencies and reinstall"

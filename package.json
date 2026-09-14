@@ -10,8 +10,8 @@
     "fix": "biome check --write",
     "test:unit": "bun test test/unit --preload ./happydom.ts --isolate --randomize",
     "test:e2e": "playwright test",
-    "db:migrate": "bun scripts/db-migrate.ts",
-    "db:seed": "bun scripts/db-seed.ts"
+    "db:migrate": "bun mise-tasks/db/migrate.ts",
+    "db:seed": "bun mise-tasks/db/seed.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1131.0",

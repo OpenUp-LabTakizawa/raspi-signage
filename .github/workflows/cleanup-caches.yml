@@ -7,7 +7,7 @@ on:
       - "components/**"
       - "public/**"
       - "src/**"
-      - "scripts/**"
+      - "mise-tasks/**"
       - "test/**"
       - "docker-compose.yml"
       - "package.json"
