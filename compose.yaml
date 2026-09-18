@@ -17,7 +17,7 @@ services:
       retries: 10
 
   rustfs:
-    image: rustfs/rustfs:latest
+    image: rustfs/rustfs:1.0.0
     container_name: raspi-signage-rustfs
     environment:
       RUSTFS_ACCESS_KEY: rustfsadmin
