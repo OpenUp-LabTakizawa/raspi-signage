@@ -1,0 +1,30 @@
+{
+  "containerEnv": {
+    "PATH": "/root/.local/share/mise/shims:${containerEnv:PATH}"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "biomejs.biome",
+        "editorconfig.editorconfig",
+        "github.vscode-github-actions",
+        "GitHub.vscode-pull-request-github",
+        "ms-azuretools.vscode-containers",
+        "ms-playwright.playwright",
+        "MS-vsliveshare.vsliveshare",
+        "rvben.rumdl"
+      ]
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers-extra/features/mise:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "forwardPorts": [3000, 9000, 9001],
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:dev-26",
+  "name": "raspi-signage",
+  "postCreateCommand": "mise trust && mise install && bun i",
+  "postStartCommand": "mise daemons start web",
+  "remoteUser": "root"
+}
