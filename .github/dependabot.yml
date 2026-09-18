@@ -1,7 +1,17 @@
 version: 2
+
+multi-ecosystem-groups:
+  infrastructure:
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "chore"
+
 updates:
   - package-ecosystem: "bun"
-    directory: "/"
+    directories:
+      - "/"
+      - "/docs"
     schedule:
       interval: "daily"
     commit-message:
@@ -11,6 +21,15 @@ updates:
       dependencies:
         patterns:
           - "*"
+
+  - package-ecosystem: "devcontainers"
+    directory: "/"
+    multi-ecosystem-group: "infrastructure"
+
+  - package-ecosystem: "docker-compose"
+    directory: "/"
+    multi-ecosystem-group: "infrastructure"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
