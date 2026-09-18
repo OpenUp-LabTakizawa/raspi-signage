@@ -6,29 +6,8 @@ concurrency:
 
 on:
   pull_request:
-    paths:
-      - "app/**"
-      - "components/**"
-      - "src/**"
-      - "mise-tasks/**"
-      - "public/**"
-      - "test/**"
-      - "docker-compose.yml"
-      - "bun.lock"
-      - "package.json"
-      - "*config.*"
   push:
-    paths:
-      - "app/**"
-      - "components/**"
-      - "src/**"
-      - "mise-tasks/**"
-      - "public/**"
-      - "test/**"
-      - "docker-compose.yml"
-      - "bun.lock"
-      - "package.json"
-      - "*config.*"
+    branches: main
   workflow_dispatch:
 
 permissions:
