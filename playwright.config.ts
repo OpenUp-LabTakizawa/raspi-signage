@@ -26,6 +26,14 @@ const config: PlaywrightTestConfig = {
           name: "webkit",
           use: { ...devices["Desktop Safari"] },
         },
+        {
+          name: "Mobile Chrome",
+          use: { ...devices["Pixel 10"] },
+        },
+        {
+          name: "Mobile Safari",
+          use: { ...devices["iPhone 17"] },
+        },
       ]
     : [
         {
