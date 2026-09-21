@@ -37,13 +37,12 @@ jobs:
       - name: 🧪 Test app
         id: test
         # Unit tests fully mock the database, storage, and auth layers, so no
-        # external services are needed. DATABASE_URL is set only so module
-        # initialization in `src/auth/server.ts` does not throw at import time
-        # (the actual auth instance is mocked in tests).
+        # external services are needed. DATABASE_URL and the Better Auth pair
+        # only have to exist, so that module initialization in
+        # `src/auth/server.ts` does not throw at import time (the actual auth
+        # instance is mocked in tests); `mise-action` exports them from
+        # `mise.toml`'s `[env]`.
         env:
-          DATABASE_URL: postgres://placeholder:placeholder@localhost:5432/placeholder
-          BETTER_AUTH_SECRET: ci-better-auth-secret-not-for-production
-          BETTER_AUTH_URL: http://localhost:3000
           FORCE_COLOR: 0
         run: |
           STATUS=0
