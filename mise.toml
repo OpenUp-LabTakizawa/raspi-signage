@@ -17,6 +17,7 @@ S3_BUCKET = "signage-contents"
 S3_PUBLIC_BASE_URL = "http://127.0.0.1:9000/signage-contents"
 
 [tasks.fix]
+description = "Auto-fix with Biome, then rumdl on the markdown files"
 run = ["bun fix --unsafe", "mise fix:md"]
 
 [tasks."fix:md"]
