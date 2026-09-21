@@ -90,10 +90,12 @@ database commands below pick the values up on their own:
 | `S3_BUCKET` | `signage-contents` |
 | `S3_PUBLIC_BASE_URL` | `http://127.0.0.1:9000/signage-contents` |
 
-Each entry is written as `{{ env.NAME | default(value='...') }}`, so a value
-that is already exported wins and the default only fills in the blanks. That
-keeps the table inert wherever real configuration exists: CI passes its own
-`env:` block, and Vercel builds never read `mise.toml` at all.
+Each entry is a plain value, so mise sets it unconditionally: exporting a
+variable in your shell does not override it, and per-checkout changes belong in
+`mise.local.toml` below. `jdx/mise-action` exports the same values into CI,
+which is why `playwright.yml` runs the stack from this repository's
+`docker-compose.yml` rather than configuring its own. Vercel builds never read
+`mise.toml` at all.
 
 Secrets and personal overrides (`BLOB_READ_WRITE_TOKEN`, `SEED_ADMIN_*`, a
 different port) go in `mise.local.toml`, which is gitignored and takes
@@ -132,6 +134,10 @@ Seed data includes 8 areas (関東, 関西, 北海道, 東北, 中部, 中国, �
 populated with public images from the Open Up Group corporate site so the
 signage display has something to render out of the box.
 
+`db:reset` starts the `db` daemon itself when the containers are down and reuses
+them when they are up, so it also works as the first command in a fresh
+checkout.
+
 ### 4. Install dependencies and start dev server
 
 ```bash
@@ -163,9 +169,10 @@ mise run local:down    # stop the containers and the dev server (data persists i
 mise daemons start web # the above plus `bun dev`
 mise daemons logs db   # tail the container logs
 mise run db:migrate    # apply src/db/schema.sql
-mise run db:seed       # truncate + reseed via Better Auth
-mise run db:reset      # migrate + ensure bucket + seed
+mise run db:seed       # truncate + reseed via Better Auth (starts `db` if it is down)
+mise run db:reset      # migrate + ensure bucket + seed (starts `db` if it is down)
 bun run test:unit      # bun test (happy-dom)
-bun run test:e2e       # Playwright E2E
+mise run test:e2e      # Playwright E2E, bringing the stack and dev server up first
+bun run test:e2e       # Playwright E2E against a stack that is already up
 bun run fix            # Biome check (auto-fix)
 ```
