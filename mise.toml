@@ -3,29 +3,18 @@ bun = "latest"
 rumdl = "latest"
 pitchfork = "latest"
 
-# Local development defaults. These mirror the service definitions in
-# compose.yaml and replace the `.env` file that used to be generated for them.
-#
-# Every value goes through `default(value=...)` on purpose. A plain
-# `KEY = "value"` makes mise overwrite whatever the parent environment already
-# exported, which would silently replace a CI workflow's `env:` block or
-# Vercel's project environment variables with these local values. The template
-# form keeps an already-exported value and only fills in the blanks.
-#
-# Personal additions (`BLOB_READ_WRITE_TOKEN`, `SEED_ADMIN_*`, ...) belong in
-# `mise.local.toml`, which is gitignored and overrides this table.
 [env]
-DATABASE_URL = "{{ env.DATABASE_URL | default(value='postgres://raspi:raspi@127.0.0.1:54322/raspi_signage') }}"
-BETTER_AUTH_SECRET = "{{ env.BETTER_AUTH_SECRET | default(value='raspi-signage-development-secret-change-me') }}"
-BETTER_AUTH_URL = "{{ env.BETTER_AUTH_URL | default(value='http://localhost:3000') }}"
-NEXT_PUBLIC_APP_URL = "{{ env.NEXT_PUBLIC_APP_URL | default(value='http://localhost:3000') }}"
-STORAGE_PROVIDER = "{{ env.STORAGE_PROVIDER | default(value='s3') }}"
-S3_ENDPOINT = "{{ env.S3_ENDPOINT | default(value='http://127.0.0.1:9000') }}"
-S3_REGION = "{{ env.S3_REGION | default(value='us-east-1') }}"
-S3_ACCESS_KEY_ID = "{{ env.S3_ACCESS_KEY_ID | default(value='rustfsadmin') }}"
-S3_SECRET_ACCESS_KEY = "{{ env.S3_SECRET_ACCESS_KEY | default(value='rustfsadmin') }}"
-S3_BUCKET = "{{ env.S3_BUCKET | default(value='signage-contents') }}"
-S3_PUBLIC_BASE_URL = "{{ env.S3_PUBLIC_BASE_URL | default(value='http://127.0.0.1:9000/signage-contents') }}"
+DATABASE_URL = "postgres://raspi:raspi@127.0.0.1:54322/raspi_signage"
+BETTER_AUTH_SECRET = "raspi-signage-development-secret-change-me"
+BETTER_AUTH_URL = "http://localhost:{{ env.WEB_PORT }}"
+NEXT_PUBLIC_APP_URL = "http://localhost:{{ env.WEB_PORT }}"
+STORAGE_PROVIDER = "s3"
+S3_ENDPOINT = "http://127.0.0.1:9000"
+S3_REGION = "us-east-1"
+S3_ACCESS_KEY_ID = "rustfsadmin"
+S3_SECRET_ACCESS_KEY = "rustfsadmin"
+S3_BUCKET = "signage-contents"
+S3_PUBLIC_BASE_URL = "http://127.0.0.1:9000/signage-contents"
 
 [tasks.fix]
 run = ["bun fix --unsafe", "mise fix:md"]
@@ -40,8 +29,6 @@ run = "rumdl fmt ."
 
 [tasks."local:up"]
 description = "Start local Postgres + RustFS via docker compose"
-# The `db` daemon below owns the containers and runs `local:provision` as its
-# readiness check, so this stays the one command that brings the stack up.
 run = "mise daemons start db"
 
 [tasks."local:down"]
@@ -50,46 +37,31 @@ run = "mise daemons stop"
 
 [tasks."local:provision"]
 description = "Apply the schema and create the bucket"
-# Each step runs with the [env] table above applied, so the scripts read
-# DATABASE_URL and the S3 settings straight from it.
-#
-# This is the `db` daemon's ready_cmd, which means it is polled until it
-# succeeds rather than run once: both steps are idempotent, so an attempt made
-# before Postgres accepts connections costs nothing but the retry.
 run = ["mise db:migrate", "mise db:ensure-bucket"]
-
-# `db:migrate`, `db:seed`, `db:seed-prod` and `db:ensure-bucket` are the files
-# under mise-tasks/db/. Being there is what makes them tasks, so they need no
-# entry here; `mise tasks` lists them with the description in each file.
 
 [tasks."db:reset"]
 description = "Re-apply schema, ensure bucket, and re-seed (truncates app tables)"
+daemons = ["db"]
 run = ["mise db:migrate", "mise db:ensure-bucket", "mise db:seed"]
+
+[tasks."test:e2e"]
+description = "Run the Playwright suite against the web daemon"
+daemons = ["web"]
+run = "bun test:e2e"
 
 [tasks.update]
 description = "Update bun dependencies and reinstall"
 run = ["bun update", "mise deps"]
 
-# mise writes the pitchfork config under $MISE_STATE_DIR and registers it, so
-# these daemons inherit the [env] table above and see DATABASE_URL and friends.
-# `mise daemons` drives pitchfork rather than replacing it, which is why
-# pitchfork stays in [tools].
-
-# `docker compose up` stays in the foreground. Backgrounding is the
-# supervisor's job, and `-d` would put the containers outside it: stopping the
-# daemon would leave them running. Attached, compose handles the SIGTERM
-# pitchfork sends and both containers exit 0.
 [daemons.db]
 run = "docker compose up"
 ready_cmd = { run = "mise run local:provision", timeout = "300s" }
 stop_signal = { signal = "SIGTERM", timeout = "30s" }
 
-# `depends` makes `mise daemons start web` bring the containers up first and
-# wait for the schema, so there is no separate "start the stack, then the
-# server" step to remember.
 [daemons.web]
 run = "bun dev"
 depends = ["db"]
+port = 3000
 ready_port = { port = 3000, timeout = "60s" }
 
 [deps.bun]

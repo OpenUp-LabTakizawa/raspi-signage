@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 //MISE description="Truncate the app tables and reseed via Better Auth"
+//MISE daemons=["db"]
 import { Pool } from "pg"
 import { getAuth } from "@/src/auth/server"
 

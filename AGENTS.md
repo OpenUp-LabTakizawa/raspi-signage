@@ -23,7 +23,7 @@ Digital signage system for Raspberry Pi. Built with Next.js 16 (App Router) + Ty
 ```bash
 mise install              # Install tools (bun etc.)
 mise run local:up         # Start local Postgres + RustFS as the `db` daemon
-mise run db:reset         # Apply schema + ensure bucket + seed via Better Auth
+mise run db:reset         # Apply schema + ensure bucket + seed (starts `db` if it is down)
 bun install
 mise daemons start web    # Start the containers and `bun dev` (http://localhost:3000)
 ```
@@ -32,7 +32,8 @@ mise daemons start web    # Start the containers and `bun dev` (http://localhost
 
 ```bash
 bun run test:unit         # Unit tests (happy-dom)
-bun run test:e2e          # E2E tests (Playwright)
+mise run test:e2e         # E2E tests, bringing the stack and dev server up first
+bun run test:e2e          # E2E tests against a stack that is already up
 ```
 
 - Test files are located in `test/unit/` and `test/e2e/`
@@ -98,7 +99,8 @@ test/                     # Tests (unit/, e2e/)
   `S3_*` credentials must come from environment variables. The local
   development values are in `mise.toml`'s `[env]`; real secrets go in the
   gitignored `mise.local.toml`.
-- Entries in `[env]` must use `{{ env.NAME | default(value='...') }}`. A bare
-  `NAME = "value"` overwrites the parent environment, which would replace a
-  CI workflow's `env:` block or a deployment's real configuration.
+- Entries in `[env]` are plain values, so mise sets them unconditionally: an
+  exported variable does not override them. Overrides go in `mise.local.toml`,
+  and a workflow that needs a different value has to write it to `$GITHUB_ENV`
+  after `jdx/mise-action` runs -- see the secret step in `playwright.yml`.
 - Replace PII with placeholders. See `SECURITY.md`.
