@@ -1,32 +1,33 @@
 🍱asset:
   - changed-files:
-    - any-glob-to-any-file: ["**/*.avif", "**/*.ico", "**/*.png", "**/*.svg"]
+      - any-glob-to-any-file: ["**/*.avif", "**/*.ico", "**/*.png", "**/*.svg"]
 🐛bug:
   - head-branch: ["^fix", "fix"]
 ♻️ci:
   - changed-files:
-    - any-glob-to-any-file: ".github/**/*.yml"
+      - any-glob-to-any-file: ".github/**/*.yml"
 ⚙️config:
   - changed-files:
-    - any-glob-to-any-file: "*config.*"
+      - any-glob-to-any-file: "*config.*"
 dependencies:
   - changed-files:
-    - any-glob-to-any-file: ["bun.lock", "package.json"]
+      - any-glob-to-any-file: ["bun.lock", "package.json"]
 📝documentation:
   - changed-files:
-    - any-glob-to-any-file: ["**/*.md"]
+      - any-glob-to-any-file: ["**/*.md"]
 🚀enhancement:
   - changed-files:
-    - any-glob-to-any-file: ["app/**", "components/**", "src/**", "mise-tasks/**"]
+      - any-glob-to-any-file:
+          ["app/**", "components/**", "src/**", "mise-tasks/**"]
 🪸git:
   - changed-files:
-    - any-glob-to-any-file: [".gitattributes", ".gitignore"]
+      - any-glob-to-any-file: [".gitattributes", ".gitignore"]
 🧰infrastructure:
   - changed-files:
-    - any-glob-to-any-file: ["**/*.toml", ".editorconfig", "biome.json"]
+      - any-glob-to-any-file: ["**/*.toml", ".editorconfig", "biome.json"]
 ✅test:
   - changed-files:
-    - any-glob-to-any-file: ['happydom.ts', 'test/**']
+      - any-glob-to-any-file: ["happydom.ts", "test/**"]
 🎨style:
   - changed-files:
-    - any-glob-to-any-file: ["styles/**", "**/*.css"]
+      - any-glob-to-any-file: ["styles/**", "**/*.css"]

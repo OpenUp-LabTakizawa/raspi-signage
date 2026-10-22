@@ -34,6 +34,7 @@ import ListItemText from "@mui/material/ListItemText"
 import { useTheme } from "@mui/material/styles"
 import Toolbar from "@mui/material/Toolbar"
 import Typography from "@mui/material/Typography"
+import type { Route } from "next"
 import { usePathname, useRouter } from "next/navigation"
 import * as React from "react"
 import { signOut } from "@/src/auth/client"
@@ -53,73 +54,72 @@ interface MainListItemsProps {
 }
 
 interface CustomListItemProps {
-  onClick: () => void
   text: string
-  href: string
+  href: Route
+  onNavigate?: () => void
   children: React.ReactNode
 }
 
 const drawerWidth = 260
 
-const MainListItems = ({ isAdmin, onNavigate }: MainListItemsProps) => {
+const CustomlistItem = ({
+  text,
+  href,
+  onNavigate,
+  children,
+}: CustomListItemProps) => {
   const router = useRouter()
   const pathname = usePathname()
-
-  const CustomlistItem = ({
-    onClick,
-    text,
-    href,
-    children,
-  }: CustomListItemProps) => {
-    const isActive = pathname === href
-    return (
-      <ListItemButton
-        selected={isActive}
-        onClick={() => {
-          onClick()
-          onNavigate?.()
+  const isActive = pathname === href
+  return (
+    <ListItemButton
+      selected={isActive}
+      onClick={() => {
+        router.push(href)
+        onNavigate?.()
+      }}
+    >
+      <ListItemIcon
+        sx={{
+          color: isActive ? "primary.main" : "text.secondary",
         }}
       >
-        <ListItemIcon
-          sx={{
-            color: isActive ? "primary.main" : "text.secondary",
-          }}
-        >
-          {children}
-        </ListItemIcon>
-        <ListItemText
-          primary={text}
-          slotProps={{
-            primary: {
-              sx: {
-                fontWeight: isActive ? 600 : 400,
-                color: isActive ? "text.primary" : "text.secondary",
-              },
+        {children}
+      </ListItemIcon>
+      <ListItemText
+        primary={text}
+        slotProps={{
+          primary: {
+            sx: {
+              fontWeight: isActive ? 600 : 400,
+              color: isActive ? "text.primary" : "text.secondary",
             },
-          }}
-        />
-      </ListItemButton>
-    )
-  }
+          },
+        }}
+      />
+    </ListItemButton>
+  )
+}
 
+const MainListItems = ({ isAdmin, onNavigate }: MainListItemsProps) => {
   return (
     <React.Fragment>
       <CustomlistItem
-        onClick={() => router.push("/dashboard")}
+        onNavigate={onNavigate}
         href="/dashboard"
         text="アップロード"
       >
         <UploadIcon />
       </CustomlistItem>
       <CustomlistItem
-        onClick={() => router.push("/dashboard/manage-contents")}
+        onNavigate={onNavigate}
         href="/dashboard/manage-contents"
         text="コンテンツ変更"
       >
         <ChangeCircleIcon />
       </CustomlistItem>
       <CustomlistItem
-        onClick={() => router.push("/dashboard/view-position")}
+        onNavigate={onNavigate}
         href="/dashboard/view-position"
         text="表示画面調整"
       >
@@ -127,7 +127,7 @@ const MainListItems = ({ isAdmin, onNavigate }: MainListItemsProps) => {
       </CustomlistItem>
       {isAdmin && (
         <CustomlistItem
-          onClick={() => router.push("/dashboard/area-management")}
+          onNavigate={onNavigate}
           href="/dashboard/area-management"
           text="エリア管理"
         >
@@ -136,7 +136,7 @@ const MainListItems = ({ isAdmin, onNavigate }: MainListItemsProps) => {
       )}
       {isAdmin && (
         <CustomlistItem
-          onClick={() => router.push("/dashboard/user-account-management")}
+          onNavigate={onNavigate}
           href="/dashboard/user-account-management"
           text="アカウント一覧管理"
         >
@@ -144,7 +144,7 @@ const MainListItems = ({ isAdmin, onNavigate }: MainListItemsProps) => {
         </CustomlistItem>
       )}
       <CustomlistItem
-        onClick={() => router.push("/dashboard/account-setting-management")}
+        onNavigate={onNavigate}
         href="/dashboard/account-setting-management"
         text="アカウント詳細管理"
       >
