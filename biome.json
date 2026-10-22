@@ -36,5 +36,10 @@
     "formatter": {
       "indentStyle": "space"
     }
+  },
+  "markdown": {
+    "formatter": {
+      "enabled": false
+    }
   }
 }

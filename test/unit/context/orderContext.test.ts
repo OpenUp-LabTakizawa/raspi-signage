@@ -7,18 +7,24 @@ import {
 } from "@/components/dashboard/OrderContext"
 import type { OrderContextValue } from "@/src/db/types"
 
+let capturedContext: OrderContextValue | null = null
+
+function TestConsumer() {
+  capturedContext = useOrderContext()
+  return createElement("div", null, "test")
+}
+
+function captureOrderContext(): OrderContextValue | null {
+  capturedContext = null
+  renderToString(
+    createElement(OrderProvider, null, createElement(TestConsumer)),
+  )
+  return capturedContext
+}
+
 describe("OrderContext minimal responsibility", () => {
   test("context value contains only orderId, setOrderId, progress, setProgress (Requirement 4.1, 4.5)", () => {
-    let capturedContext: OrderContextValue | null = null
-
-    function TestConsumer() {
-      capturedContext = useOrderContext()
-      return createElement("div", null, "test")
-    }
-
-    renderToString(
-      createElement(OrderProvider, null, createElement(TestConsumer)),
-    )
+    const capturedContext = captureOrderContext()
 
     expect(capturedContext).not.toBeNull()
     const keys = Object.keys(
@@ -28,32 +34,14 @@ describe("OrderContext minimal responsibility", () => {
   })
 
   test("orderId initial value is null (Requirement 4.1)", () => {
-    let capturedContext: OrderContextValue | null = null
-
-    function TestConsumer() {
-      capturedContext = useOrderContext()
-      return createElement("div", null, "test")
-    }
-
-    renderToString(
-      createElement(OrderProvider, null, createElement(TestConsumer)),
-    )
+    const capturedContext = captureOrderContext()
 
     expect(capturedContext).not.toBeNull()
     expect((capturedContext as unknown as OrderContextValue).orderId).toBeNull()
   })
 
   test("progress initial value is false (Requirement 4.1)", () => {
-    let capturedContext: OrderContextValue | null = null
-
-    function TestConsumer() {
-      capturedContext = useOrderContext()
-      return createElement("div", null, "test")
-    }
-
-    renderToString(
-      createElement(OrderProvider, null, createElement(TestConsumer)),
-    )
+    const capturedContext = captureOrderContext()
 
     expect(capturedContext).not.toBeNull()
     expect((capturedContext as unknown as OrderContextValue).progress).toBe(
@@ -62,16 +50,7 @@ describe("OrderContext minimal responsibility", () => {
   })
 
   test("user info fields are not included in context (Requirement 4.2)", () => {
-    let capturedContext: OrderContextValue | null = null
-
-    function TestConsumer() {
-      capturedContext = useOrderContext()
-      return createElement("div", null, "test")
-    }
-
-    renderToString(
-      createElement(OrderProvider, null, createElement(TestConsumer)),
-    )
+    const capturedContext = captureOrderContext()
 
     expect(capturedContext).not.toBeNull()
     const ctx = capturedContext as unknown as Record<string, unknown>
@@ -87,11 +66,6 @@ describe("OrderContext minimal responsibility", () => {
   })
 
   test("useOrderContext throws when used outside OrderProvider", () => {
-    function TestConsumer() {
-      useOrderContext()
-      return createElement("div", null, "test")
-    }
-
     expect(() => {
       renderToString(createElement(TestConsumer))
     }).toThrow("useOrderContext must be used within an OrderProvider")
